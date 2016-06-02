@@ -15,7 +15,7 @@
 /**
  *  获取类的单例方法，不用手动自己去实现单例
  *
- *  @return 返回单例队形
+ *  @return 返回单例对象
  */
 + (instancetype)singleton;
 
