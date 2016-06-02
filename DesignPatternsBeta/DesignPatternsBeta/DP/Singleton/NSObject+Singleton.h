@@ -23,4 +23,16 @@
  *  清空当前类的单例~~~
  */
 + (void)clearSingleton;
+
+/**
+ *  情况所有的单例
+ */
++ (void)clearAllSingletons;
+
+/**
+ *  获取所有的单例
+ *
+ *  @return dic
+ */
++ (NSDictionary *)fetchAllSingletons;
 @end

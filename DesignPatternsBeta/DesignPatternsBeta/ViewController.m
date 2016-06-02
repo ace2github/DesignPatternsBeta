@@ -22,10 +22,17 @@
 }
 
 - (void)testSingleton {
+    NSLog(@"%@",[NSObject fetchAllSingletons]);
     [Person singleton].name = @"Person :: hello world";
     [Student singleton].name = @"Student :: hello world";
     [Student singleton].grade = @"小一班";
+    NSLog(@"%@",[NSObject fetchAllSingletons]);
+    [NSObject clearAllSingletons];
+    NSLog(@"%@",[NSObject fetchAllSingletons]);
     
+    [Person singleton].name = @"Person :: hello world";
+    [Student singleton].name = @"Student :: hello world";
+    [Student singleton].grade = @"小一班";
     NSLog(@"%@,%@",[Person singleton],[Person singleton].name);
     NSLog(@"%@,%@,%@",[Student singleton],[Student singleton].name,[Student singleton].grade);
 
@@ -64,6 +71,7 @@
         }
         
     });
+
 }
 
 - (void)didReceiveMemoryWarning {

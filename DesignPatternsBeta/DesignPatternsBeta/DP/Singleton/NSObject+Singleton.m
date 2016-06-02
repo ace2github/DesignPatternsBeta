@@ -13,6 +13,14 @@ static NSMapTable *g_MapTable = nil;
 static dispatch_once_t g_OnceToken;
 
 @implementation NSObject (Singleton)
++ (void)load {
+    //一开始创建lock和map对象，
+    //方便后续接口clearSingleton、clearAllSingletons、fetchAllSingletons等的使用
+    [NSObject singleton]; [NSObject clearSingleton];
+}
+
+
+#pragma mark - public
 + (instancetype)singleton {
     dispatch_once(&g_OnceToken, ^{
         g_Singleton_Lock = dispatch_semaphore_create(1);
@@ -37,5 +45,21 @@ static dispatch_once_t g_OnceToken;
     dispatch_semaphore_wait(g_Singleton_Lock, DISPATCH_TIME_FOREVER);
     [g_MapTable removeObjectForKey:NSStringFromClass([self class])];
     dispatch_semaphore_signal(g_Singleton_Lock);
+}
+
+
++ (void)clearAllSingletons {
+    dispatch_semaphore_wait(g_Singleton_Lock, DISPATCH_TIME_FOREVER);
+    [g_MapTable removeAllObjects];
+    dispatch_semaphore_signal(g_Singleton_Lock);
+}
+
+
++ (NSDictionary *)fetchAllSingletons {
+    dispatch_semaphore_wait(g_Singleton_Lock, DISPATCH_TIME_FOREVER);
+    NSDictionary *singletons = [g_MapTable dictionaryRepresentation];
+    dispatch_semaphore_signal(g_Singleton_Lock);
+
+    return singletons;
 }
 @end
