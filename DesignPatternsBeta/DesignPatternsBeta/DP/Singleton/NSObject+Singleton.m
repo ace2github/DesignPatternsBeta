@@ -7,7 +7,7 @@
 //
 
 #import "NSObject+Singleton.h"
-
+static dispatch_queue_t g_SingletonQueue = NULL;
 static dispatch_semaphore_t g_Singleton_Lock = NULL;
 static NSMapTable *g_MapTable = nil;
 static dispatch_once_t g_OnceToken;
@@ -23,6 +23,7 @@ static dispatch_once_t g_OnceToken;
 #pragma mark - public
 + (instancetype)singleton {
     dispatch_once(&g_OnceToken, ^{
+        g_SingletonQueue = dispatch_queue_create("global.singleton.queue", DISPATCH_QUEUE_SERIAL);
         g_Singleton_Lock = dispatch_semaphore_create(1);
         g_MapTable = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsStrongMemory
                                                valueOptions:NSPointerFunctionsStrongMemory
@@ -32,9 +33,9 @@ static dispatch_once_t g_OnceToken;
     dispatch_semaphore_wait(g_Singleton_Lock, DISPATCH_TIME_FOREVER);
     id singleton = [g_MapTable objectForKey:NSStringFromClass([self class])];
     if (!singleton) {
+        //当[self class]类的初始化init过程中，初始化新单例，必定dead lock
         singleton = [[[self class] alloc] init];
-        NSString *key = [[NSString alloc] initWithString:NSStringFromClass([self class])];
-        [g_MapTable setObject:singleton forKey:key];
+        [g_MapTable setObject:singleton forKey:NSStringFromClass([self class])];
     }
     dispatch_semaphore_signal(g_Singleton_Lock);
     
