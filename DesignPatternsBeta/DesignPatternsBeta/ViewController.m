@@ -22,7 +22,19 @@
 }
 
 - (void)testSingleton {
-    NSLog(@"%@",[NSObject fetchAllSingletons]);
+    [ObjectB singleton];
+    
+    [ObjectB singleton];
+    [ObjectA singleton];
+
+    [ObjectC singleton];
+    return;
+
+
+    
+    
+    
+    NSLog(@"\r\n\r\n\r\n\r\n\r\n %@",[NSObject fetchAllSingletons]);
     [Person singleton].name = @"Person :: hello world";
     [Student singleton].name = @"Student :: hello world";
     [Student singleton].grade = @"小一班";

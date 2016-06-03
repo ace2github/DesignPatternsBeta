@@ -18,6 +18,7 @@
 //    
 //    return _sharedManager;
 //}
+
 - (void)dealloc{
     NSLog(@"Dealloc %@",[self class]);
 }
@@ -37,3 +38,46 @@
     NSLog(@"Dealloc %@",[self class]);
 }
 @end
+
+
+/////////////////////////////////////////////
+//
+//
+//
+/////////////////////////////////////////////
+@implementation ObjectA
+- (id)init {
+    if (self = [super init]) {
+        [Student singleton];
+    }
+    return self;
+}
+@end
+
+@implementation ObjectB
+- (id)init {
+    if (self = [super init]) {
+        [ObjectA singleton];
+    }
+    return self;
+}
+@end
+
+@implementation ObjectC
+- (id)init {
+    if (self = [super init]) {
+        [ObjectC singleton];
+    }
+    return self;
+}
+@end
+
+
+
+
+
+
+
+
+
+

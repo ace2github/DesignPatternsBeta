@@ -13,9 +13,28 @@
 @property (nonatomic, strong) NSString *name;
 @end
 
-
-
 @interface Student : Person
 //@property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *grade;
+@end
+
+
+
+
+/////////////////////////////////////////////
+//
+//
+//
+/////////////////////////////////////////////
+@interface ObjectA : NSObject
+@end
+
+
+
+@interface ObjectB : NSObject
+@end
+
+
+
+@interface ObjectC : NSObject
 @end
