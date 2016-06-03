@@ -24,12 +24,25 @@
 - (void)testSingleton {
     [ObjectB singleton];
     
-    [ObjectB singleton];
-    [ObjectA singleton];
+    [ObjectB singleton];[ObjectA singleton];
+    [ObjectB singleton];[ObjectA singleton];
+    [ObjectB singleton];[ObjectA singleton];
 
-    [ObjectC singleton];
+    //[ObjectC singleton];
+    for (int i=0; i<50; i++) {
+        dispatch_async(dispatch_get_global_queue(0, DISPATCH_QUEUE_PRIORITY_DEFAULT), ^{
+            for (int i=0; i<200; i++) {
+                NSLog(@"[ObjectC singleton]::%@",[ObjectC singleton]);
+            }
+        });
+
+    }
+
+
+    NSLog(@"%@",[[ObjectA alloc] init]);
+    NSLog(@"%@",[[ObjectB alloc] init]);
+    NSLog(@"%@",[[ObjectC alloc] init]);
     return;
-
 
     
     

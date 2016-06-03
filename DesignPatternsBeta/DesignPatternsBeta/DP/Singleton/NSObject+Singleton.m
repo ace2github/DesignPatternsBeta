@@ -29,20 +29,27 @@ static dispatch_once_t g_OnceToken;
     dispatch_semaphore_signal(g_Singleton_Lock);
     
     if (!singleton) {
-        //当[self class]类的初始化init过程中，初始化新单例，必定dead lock
+        //circle alloc :: Class A`s method init call [A singleton],please not do it.
         singleton = [[[self class] alloc] init];
         NSLog(@"S.Z %@ :: init",[self class]);
         
+        
         dispatch_semaphore_wait(g_Singleton_Lock, DISPATCH_TIME_FOREVER);
-        if (![g_MapTable objectForKey:NSStringFromClass([self class])]) {
-            [g_MapTable setObject:singleton forKey:NSStringFromClass([self class])];
+        id object = [g_MapTable objectForKey:NSStringFromClass([self class])];
+        if (nil == object) {
             NSLog(@"    S.Z %@ :: add to map table.",[self class]);
+            [g_MapTable setObject:singleton forKey:NSStringFromClass([self class])];
+            
+        }else{
+            NSLog(@"    S.Z %@ :: has new singleton.",[self class]);
+            singleton = object;
         }
         dispatch_semaphore_signal(g_Singleton_Lock);
     }
     
     return singleton;
 }
+
 
 + (void)clearSingleton {
     dispatch_semaphore_wait(g_Singleton_Lock, DISPATCH_TIME_FOREVER);

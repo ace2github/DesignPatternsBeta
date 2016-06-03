@@ -66,7 +66,9 @@
 @implementation ObjectC
 - (id)init {
     if (self = [super init]) {
-        [ObjectC singleton];
+        //[ObjectC singleton];
+        for (int i=0; i<1000; i++) {
+        }
     }
     return self;
 }
